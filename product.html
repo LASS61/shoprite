@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pick n Pay - Products</title>
+  <link rel="stylesheet" href="css.css">
+  <script defer src="shoprite_products.js"></script>
+</head>
+<body>
+  <header>
+    <div class="banner">
+      <img src="SHOPRITE.webp" alt="SHOPRITE LOGO">
+      <p>LOWER PRICES YOU CAN TRUST ALWAYS</p>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="product.html">Product</a></li>
+        <li><a href="register.html">Register</a></li>
+        <li><a href="order.html">ORDER</a></li>
+        <li><a href="about.html">About Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Our Fresh Products</h2>
+
+    <div class="product-buttons">
+      <button onclick="showPnPCategory('DAIRY')">DAIRY</button>
+      <button onclick="showPnPCategory('BAKERY')">BAKERY</button>
+        <button onclick="showPnPCategory('MEAT')"> MEAT</button>
+          <button onclick="showPnPCategory('Beverages')"> BEVERAGES</button>
+    </div>
+<!-- Product Section Layout -->
+<div class="product-layout">
+
+  <!-- Left Column: Meat & Bakery -->
+  <div class="left-column">
+    <div id="MEAT" class="product-section">
+      <h3>Meat</h3>
+      <div class="gallery">
+        <img src="CHICKEN.webp" alt="Fresh Chicken">
+        <P>R50</P>
+        <button class="btn">Add to Cart</button>
+        <img src="BEEF.webp" alt="Beef Cuts">
+        <P>R75</P>
+        <button class="btn">Add to Cart</button>
+        <img src="GOAT.webp" alt="Goat Meat">
+        <P>R35</P>
+        <button class="btn">Add to Cart</button>
+      </div>
+    </div>
+
+    <div id="BAKERY" class="product-section">
+      <h3>Bakery</h3>
+      <div class="gallery">
+        <img src="MUFFIN.webp" alt="Blueberry Muffins">
+        <P>R25</P>
+        <button class="btn">Add to Cart</button>
+        <img src="CAKE.webp" alt="Chocolate Cake">
+        <P>R100</P>
+        <button class="btn">Add to Cart</button>
+        <img src="WAFFLES.webp" alt="Belgian Waffles">
+        <P>R20</P>
+        <button class="btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Beverages & Dairy -->
+  <div class="right-column">
+    <div id="BEVERAGES" class="product-section">
+      <h3>Beverages</h3>
+      <div class="gallery">
+        <img src="LIQUOR.jpeg" alt="Assorted Liquor">
+        <P>25</P>
+        <button class="btn">Add to Cart</button>
+        <img src="ENERGY.jpeg" alt="Energy Drinks">
+        <P>R15</P>
+        <button class="btn">Add to Cart</button>
+        <img src="SOFT DR.jpeg" alt="Soft Drinks">
+        <P>R15</P>
+        <button class="btn">Add to Cart</button>
+      </div>
+    </div>
+
+    <div id="DAIRY" class="product-section">
+      <h3>Dairy Products</h3>
+      <div class="gallery">
+        <img src="MILK.webp" alt="Fresh Milk">
+        <P>R30</P>
+        <button class="btn">Add to Cart</button>
+        <img src="CUSTARD.webp" alt="Creamy Custard">
+        <P>R23</P>
+        <button class="btn">Add to Cart</button>
+        <img src="CHOC.webp" alt="Chocolate Milk">
+        <P>R17</P>
+        <button class="btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<FORm>
+  <!-- JAVASCRIPT CODE -->
+  <script>
+    let cart = [];
+    const totalPriceField = document.getElementById("totalPrice");
+
+    function updateTotalPrice() {
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.quantity;
+      });
+      totalPriceField.value = "R" + total.toFixed(2);
+    }
+
+    document.querySelectorAll(".product-card .btn").forEach(btn => {
+      btn.addEventListener("click", function () {
+        const productCard = btn.closest(".product-card");
+        const name = productCard.querySelector("h3").innerText;
+        const priceText = productCard.querySelector("p").innerText;
+        const price = parseFloat(priceText.replace(/[^0-9.]/g, ""));
+
+        let existingItem = cart.find(item => item.name === name);
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          cart.push({ name, price, quantity: 1 });
+        }
+
+        updateTotalPrice();
+      });
+    });
+
+    document.getElementById("orderForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById("fname").value;
+      const lastName = document.getElementById("LASTNAME").value;
+      const streetAddress = document.getElementById("streetaddress").value;
+      const email = document.getElementById("email").value;
+
+      if (cart.length === 0) {
+        alert("Please add at least one item to your cart before placing an order.");
+        return;
+      }
+
+      let orderDetails = "";
+      let total = 0;
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        orderDetails += `${item.name} - Qty: ${item.quantity} - R${itemTotal.toFixed(2)}\n`;
+      });
+
+      alert(
+        `Thank you, ${fullName} ${lastName}!\n\n` +
+        `Your order has been placed successfully.\n` +
+        `Email: ${email}\nAddress: ${streetAddress}\n\n` +
+        `Items Ordered:\n${orderDetails}` +
+        `Total: R${total.toFixed(2)}`
+      );
+
+      cart = [];
+      this.reset();
+      updateTotalPrice();
+    });
+  </script>
+
+</FORm>
+  
+  <footer>
+    <p>&copy; 2025 @ SHOPRITE. All rights reserved.</p>
+  </footer>
+  <FOOter>
+    <p>STRICTLY DESIGNES BY LASS</p>
+  </FOOter>
+  
+</body>
+</html>
